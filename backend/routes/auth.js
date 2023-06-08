@@ -17,18 +17,21 @@ router.post(
     body("password", "Password must be 8 Characters").isLength({ min: 8 }),
   ],
   async (req, res) => {
+    let success = false;
     // If there are errors, return bad request and errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      success = false;
+      return res.status(400).json({ success, errors: errors.array() });
     }
     try {
       // Check whether the user with this email exists already
       let user = await User.findOne({ email: req.body.email });
       if (user) {
+        success = false;
         return res
           .status(400)
-          .json({ error: "Sorry! a user with this email already exists" });
+          .json({ success, error: "Sorry! a user with this email already exists" });
       }
       // Create a New User
       const salt = await bcrypt.genSalt(10);
@@ -51,10 +54,12 @@ router.post(
       };
       const authToken = jwt.sign(data, JWT_SECRET);
       console.log(authToken);
-      res.json({ authToken });
+      success = true;
+      res.json({ success, authToken });
     } catch (error) {
+      success = false;
       console.error(error.message);
-      res.status(500).send("Internal Server Error!");
+      res.status(500).send(success, "Internal Server Error!");
     }
   }
 );
@@ -66,6 +71,7 @@ router.post(
     body("password", "Password cannot be blank").exists(),
   ],
   async (req, res) => {
+    let success = false;
     // If there are errors, return bad request and errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -77,15 +83,17 @@ router.post(
     try {
       let user = await User.findOne({ email });
       if (!user) {
+        success = false;
         return res
           .status(400)
-          .json({ error: "Please! try to login with correct credentials" });
+          .json({ success, error: "Please! try to login with correct credentials" });
       }
       let passwordCompare = await bcrypt.compare(password, user.password);
       if (!passwordCompare) {
+        success = false;
         return res
           .status(400)
-          .json({ error: "Please! try to login with correct credentials" });
+          .json({ success, error: "Please! try to login with correct credentials" });
       }
       const data = {
         user: {
@@ -94,7 +102,8 @@ router.post(
       };
       const authToken = jwt.sign(data, JWT_SECRET);
       // console.log(authToken);
-      res.json({ authToken });
+      success = true;
+      res.json({success, authToken });
     } catch (error) {
       console.error(error.message);
       res.status(500).send("Internal Server Error!");

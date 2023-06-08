@@ -5,19 +5,35 @@ import Home from "./components/Home";
 import About from "./components/About";
 import NoteState from "./context/notes/noteState";
 import Alert from "./components/Alert";
+import Login from "./components/login";
+import Signup from "./components/Signup";
+import React, {useState} from "react";
 
 
 function App() {
+  const [alert, setAlert] = useState(null);
+
+  const showAlert = (message, type) => {
+    setAlert({
+      msg: message,
+      type: type,
+    });
+    setTimeout(() => {
+      setAlert(null);
+    }, 1500);
+  };
   return (
     <>
     <NoteState>
       <Router>
         <Navbar/>
-        <Alert message="This is the best and secure website for your Notes." />
+        <Alert alert={alert} />
         <div className="container">
         <Routes>
-          <Route exact path="/" element={<Home/>}></Route>
+          <Route exact path="/" element={<Home showAlert={showAlert}/>}></Route>
           <Route path="/about" element={<About/>}></Route>
+          <Route path="/login" element={<Login showAlert={showAlert}/>}></Route>
+          <Route path="/signup" element={<Signup showAlert={showAlert}/>}></Route>
         </Routes>
         </div>
       </Router>

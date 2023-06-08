@@ -13,8 +13,7 @@ const NoteState = (props) => {
       method: "POST",
       headers: {
         "content-type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQ0ZjdkNDdjNDg0YWM2ZTI4ZmQyMTE1In0sImlhdCI6MTY4MzA0MDEzMX0.66_P7pSxYM94Vbj0CmZ292bhvIXMZGurlNz_739ld0M",
+        "auth-token": localStorage.getItem("token")
       },
       body: JSON.stringify({ title, description, tag }),
     });
@@ -30,7 +29,7 @@ const NoteState = (props) => {
       headers: {
         "content-type": "application/json",
         "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQ0ZjdkNDdjNDg0YWM2ZTI4ZmQyMTE1In0sImlhdCI6MTY4MzA0MDEzMX0.66_P7pSxYM94Vbj0CmZ292bhvIXMZGurlNz_739ld0M",
+          localStorage.getItem("token")
       },
     });
     const json = await response.json();
@@ -44,12 +43,12 @@ const NoteState = (props) => {
       headers: {
         "content-type": "application/json",
         "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQ0ZjdkNDdjNDg0YWM2ZTI4ZmQyMTE1In0sImlhdCI6MTY4MzA0MDEzMX0.66_P7pSxYM94Vbj0CmZ292bhvIXMZGurlNz_739ld0M",
+          localStorage.getItem("token")
       },
     });
     // console.log("Deleting the note with ID:=" + id);
     const json = await response.json();
-    // console.log(json);
+    console.log(json);
     const newNotes = notes.filter((note) => {
       return note._id !== id;
     });
@@ -63,12 +62,12 @@ const NoteState = (props) => {
       headers: {
         "content-type": "application/json",
         "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQ0ZjdkNDdjNDg0YWM2ZTI4ZmQyMTE1In0sImlhdCI6MTY4MzA0MDEzMX0.66_P7pSxYM94Vbj0CmZ292bhvIXMZGurlNz_739ld0M",
+          localStorage.getItem("token")
       },
       body: JSON.stringify({ title, description, tag }),
     });
     const json = response.json();
-    // log(json);
+    console.log(json);
     // log("Editing the existing note:=" + id);
     // Logic to edit in Client
     let newNotes = JSON.parse(JSON.stringify(notes));
